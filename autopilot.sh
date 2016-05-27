@@ -52,6 +52,7 @@ if $terminus drush "up --security-only -y" --site=$site --env=live | grep 'SECUR
 	$terminus site deploy --site=$site --env=test --sync-content --cc --updatedb --note="Enjoy Creativity Autopilot: Running security updates and any other changes staged in Dev. Please double check the code tab to ensure only the updates are in this deployment before pushing to live."
 	echo '=================================='
 	echo 'AUTOPILOT COMPLETE!'
+	mail -s "$site Security Updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site".
 	echo '=================================='
 
 else
