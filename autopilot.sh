@@ -21,7 +21,7 @@ echo 'AUTHENTICATE WITH PANTHEON:'
 $terminus auth login david@enjoycreativity.com
 echo '=================================='
 echo 'CHECKING FOR UPDATES ON LIVE:'
-if $terminus drush "up --security-only -y" --site=$site --env=live | grep 'SECURITY UPDATE available'; then
+if $terminus drush "up --security-only -n" --site=$site --env=live | grep 'SECURITY UPDATE available'; then
 	echo '=================================='
 	echo 'APPLYING UPSTREAM UPDATES TO DEV:'
 	$terminus site upstream-updates --site=$site --env=dev --accept-upstream --updatedb
