@@ -24,7 +24,7 @@ echo 'CHECKING FOR UPDATES ON LIVE:'
 if $terminus drush "up --security-only -n" --site=$site --env=live | grep 'SECURITY UPDATE available'; then
 	echo '=================================='
 	echo 'APPLYING UPSTREAM UPDATES TO DEV:'
-	$terminus site upstream-updates --site=$site --env=dev --accept-upstream --updatedb
+	$terminus site upstream-updates apply --site=$site --env=dev --accept-upstream --updatedb
 	echo '=================================='
 	echo 'TESTING FOR AUTOPILOT ENVIRONMENT:'
 
@@ -51,7 +51,7 @@ if $terminus drush "up --security-only -n" --site=$site --env=live | grep 'SECUR
 	echo 'DEPLOYING UPDATES INTO TEST'
 	$terminus site deploy --site=$site --env=test --sync-content --cc --updatedb --note="Enjoy Creativity Autopilot: Running security updates and any other changes staged in Dev. Please double check the code tab to ensure only the updates are in this deployment before pushing to live."
 	echo '=================================='
-	echo 'SENDING EMAIL TO AUTOPILOT@ENJOYCREATIVITY.COM'
+	echo 'SENDING EMAIL'
 	mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out!"
 	echo '=================================='
 	echo 'AUTOPILOT COMPLETE!'
