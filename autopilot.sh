@@ -34,7 +34,7 @@ if $terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=
 	if $terminus site environments --site=$site | grep autopilot; then
 		echo 'SYNCING CODE AND CONTENT TO MULTIDEV'
 		$terminus site clone-content --site=$site --from-env=live --to-env=$multidev --yes
-		$terminus site marge-from-dev --site=$site --env=$multidev
+		$terminus site merge-from-dev --site=$site --env=$multidev
 
 	else
 		echo 'CREATING NEW ENV FOR AUTOPILOT:'
