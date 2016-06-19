@@ -24,7 +24,7 @@ echo 'CHECKING FOR UPDATES ON LIVE:'
 updatestatus="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available')"
 
 if echo "$updatestatus"; then
-		mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out! $updatestatus"
+		#mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out! $updatestatus"
 
         echo '=================================='
         echo 'CHANGING MODE IN AUTOPILOT TO GIT:'
