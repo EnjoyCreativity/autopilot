@@ -22,7 +22,8 @@ $terminus auth login david@enjoycreativity.com
 echo '=================================='
 echo 'CHECKING FOR UPDATES ON LIVE:'
 status="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test)"
-if echo "${status}" | grep 'SECURITY UPDATE available'; then
+status=echo "${status}" | grep 'SECURITY UPDATE available'
+if echo status then
 		mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out! \n echo "${status}" | grep 'SECURITY UPDATE available';"
 
         echo '=================================='
