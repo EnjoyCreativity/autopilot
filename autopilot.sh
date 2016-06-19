@@ -21,7 +21,8 @@ echo 'AUTHENTICATE WITH PANTHEON:'
 $terminus auth login david@enjoycreativity.com
 echo '=================================='
 echo 'CHECKING FOR UPDATES ON LIVE:'
-if $terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available'; then
+status="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test)"
+if status | grep 'SECURITY UPDATE available'; then
         echo '=================================='
         echo 'CHANGING MODE IN AUTOPILOT TO GIT:'
         $terminus site set-connection-mode --site=$site --env=dev --mode=git
