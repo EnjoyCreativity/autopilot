@@ -21,10 +21,13 @@ echo 'AUTHENTICATE WITH PANTHEON:'
 $terminus auth login david@enjoycreativity.com
 echo '=================================='
 echo 'CHECKING FOR UPDATES ON LIVE:'
-if $terminus drush "up --security-only -n" --site=$site --env=live | grep 'SECURITY UPDATE available'; then
+if $terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available'; then
+        echo '=================================='
+        echo 'CHANGING MODE IN AUTOPILOT TO GIT:'
+        $terminus site set-connection-mode --site=$site --env=dev --mode=git
 	echo '=================================='
 	echo 'APPLYING UPSTREAM UPDATES TO DEV:'
-	$terminus site upstream-updates apply --site=$site --env=dev --accept-upstream --updatedb
+	$terminus site upstream-updates apply --yes --site=$site --env=dev --accept-upstream --updatedb
 	echo '=================================='
 	echo 'TESTING FOR AUTOPILOT ENVIRONMENT:'
 
@@ -40,7 +43,7 @@ if $terminus drush "up --security-only -n" --site=$site --env=live | grep 'SECUR
 	$terminus site set-connection-mode --site=$site --env=$multidev --mode=sftp
 	echo '=================================='
 	echo 'APPLYING ALL SECURITY UPDATES:'
-	$terminus drush "up --security-only -y" --site=$site --env=$multidev
+	$terminus drush "up --security-only --no-core -y" --site=$site --env=$multidev
 	echo '=================================='
 	echo 'COMMITTING THE CODE CHANGES:'
 	$terminus site code commit --site=$site --env=$multidev --message="Enjoy Creativity Autopilot: Running security updates." --yes
