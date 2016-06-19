@@ -32,12 +32,15 @@ if $terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=
 	echo 'TESTING FOR AUTOPILOT ENVIRONMENT:'
 
 	if $terminus site environments --site=$site | grep autopilot; then
-		echo 'DELETING AUTOPILOT EVIRONMENT'
-		$terminus site delete-env --site=$site --env=$multidev --remove-branch --yes
+		echo 'SYNCING CODE AND CONTENT TO MULTIDEV'
+		$terminus site clone-content --site=$site --from-env=live --to-env=$multidev
+		$terminus site marge-from-dev --site=$site --env=$multidev
+
+	else
+		echo 'CREATING NEW ENV FOR AUTOPILOT:'
+		$terminus site create-env --site=$site --from-env=dev --to-env=$multidev
 	fi
 
-	echo 'CREATING NEW ENV FOR AUTOPILOT:'
-	$terminus site create-env --site=$site --from-env=dev --to-env=$multidev
 	echo '=================================='
 	echo 'CHANGING MODE IN AUTOPILOT TO SFTP:'
 	$terminus site set-connection-mode --site=$site --env=$multidev --mode=sftp
