@@ -22,7 +22,9 @@ $terminus auth login david@enjoycreativity.com
 echo '=================================='
 echo 'CHECKING FOR UPDATES ON LIVE:'
 status="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test)"
-if "${status}" | grep 'SECURITY UPDATE available'; then
+if echo "${status}" | grep 'SECURITY UPDATE available'; then
+		mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out! \n echo "${status}" | grep 'SECURITY UPDATE available';"
+
         echo '=================================='
         echo 'CHANGING MODE IN AUTOPILOT TO GIT:'
         $terminus site set-connection-mode --site=$site --env=dev --mode=git
