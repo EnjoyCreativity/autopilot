@@ -62,7 +62,7 @@ if echo "$updatestatus"; then
 	$terminus site deploy --site=$site --env=test --sync-content --cc --updatedb --note="Enjoy Creativity Autopilot: Running security updates and any other changes staged in Dev. Please double check the code tab to ensure only the updates are in this deployment before pushing to live.  $updatestatus"
 	echo '=================================='
 	echo 'SENDING EMAIL'
-	mail -s "$site security updates" autopilot@enjoycreativity.com <<< "Updates available in the Test environment of $site. Go check it out! $updatestatus"
+	echo -e "Updates available in the Test environment of $site. Go check it out! \n $updatestatus" | mail -s "$site security updates" autopilot@enjoycreativity.com
 	echo '=================================='
 	echo 'AUTOPILOT COMPLETE!'
 	echo '=================================='
