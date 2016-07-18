@@ -1,11 +1,4 @@
 #!/bin/bash
-#
-# In order to fully automate this script and be rid of the prompt to accept
-# the hosts file from the server, you'll need to add the following to your
-# .drush/drushrc.php: $options['ssh-options'] = '-o StrictHostKeyChecking=no'
-#
-# You may also want to include this in cron for each site you want to update.
-#
 
 set -e
 
@@ -80,6 +73,3 @@ else
 	echo '=================================='
 	echo 'STOPPED: NO SECURITY UPDATES.'
 fi
-
-#https://pantheon.io/docs/articles/sites/code/applying-upstream-updates/
-#https://github.com/pantheon-systems/terminus/wiki/Available-Commands
