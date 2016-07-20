@@ -23,7 +23,7 @@ echo 'CHECKING THE FRAMEWORK:'
 framework="$($terminus site info --site=$1 | grep 'drupal')"
 
 if echo "$framework"; then
-	$framework="DRUPAL"
+	framework="DRUPAL"
 	echo $framework
 
 
@@ -87,7 +87,7 @@ else
 	framework="$($terminus site info --site=$1 | grep 'wordpress')"
 
 	if echo "$framework"; then
-		$framework="WORDPRESS"
+		framework="WORDPRESS"
 		echo $framework
 	else
 		echo "FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS"
