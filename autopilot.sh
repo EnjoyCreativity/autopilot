@@ -82,10 +82,10 @@ if echo "$framework"; then
 	fi
 
 else
-	framework="$($terminus site info --site=$1 | grep 'wordpress')"
+	frameworkwp="$($terminus site info --site=$1 | grep 'wordpress')"
 
-	if echo "$framework"; then
-		framework="WORDPRESS"
+	if echo "$frameworkwp"; then
+		frameworkwp="WORDPRESS"
 	else
 		echo "FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS"
 		echo "THIS FRAMEWORK IS NOT SUPPORTED"
