@@ -24,8 +24,6 @@ framework="$($terminus site info --site=$1 | grep 'drupal')"
 
 if echo "$framework"; then
 	framework="DRUPAL"
-	echo $framework
-
 
 	echo '=================================='
 	echo 'CHECKING FOR UPDATES ON LIVE:'
@@ -88,7 +86,6 @@ else
 
 	if echo "$framework"; then
 		framework="WORDPRESS"
-		echo $framework
 	else
 		echo "FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS"
 		echo "THIS FRAMEWORK IS NOT SUPPORTED"
