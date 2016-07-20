@@ -20,7 +20,7 @@ echo 'AUTHENTICATE WITH PANTHEON:'
 $terminus auth login $2
 echo '=================================='
 echo 'CHECKING THE FRAMEWORK:'
-framework="$($terminus site info --site=$1 | grep 'Framework     | drupal')"
+framework="$($terminus site info --site=$1 | grep 'drupal')"
 
 if echo "$framework"; then
 	$framework="DRUPAL"
@@ -84,7 +84,7 @@ if echo "$framework"; then
 	fi
 
 else
-	framework="$($terminus site info --site=$1 | grep 'Framework     | wordpress')"
+	framework="$($terminus site info --site=$1 | grep 'wordpress')"
 
 	if echo "$framework"; then
 		$framework="WORDPRESS"
