@@ -42,7 +42,7 @@ if echo "$framework"; then
 	fi
 
 
-	if $runupdates then
+	if $runupdates; then
     echo '=================================='
     echo 'BACKUP EVERY ENVIRONMENT:'
     $terminus site backups create --site=$site --env=dev --element=all
