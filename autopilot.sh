@@ -12,6 +12,8 @@ pemail=$2
 email=$3
 # What should the multidev environment be called?
 multidev="autopilot"
+# Should updates run? We don't know yet.
+runupdates=false
 
 echo '=================================='
 echo "BEGINNING AUTOPILOT FOR $1"
@@ -27,17 +29,28 @@ if echo "$framework"; then
 
 	echo '=================================='
 	echo 'CHECKING FOR UPDATES ON LIVE:'
-	updatestatus="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available')"
+	moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available')"
 
-	if echo "$updatestatus"; then
-	    echo '=================================='
-	    echo 'BACKUP EVERY ENVIRONMENT:'
-	    $terminus site backups create --site=$site --env=dev --element=all
-	    $terminus site backups create --site=$site --env=test --element=all
-	    $terminus site backups create --site=$site --env=live --element=all
-	    echo '=================================='
-	    echo 'CHANGING MODE IN DEV TO GIT:'
-	    $terminus site set-connection-mode --site=$site --env=dev --mode=git
+	if echo "$moduleupdates"; then
+		$runupdates=true;
+	else
+		coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')"
+
+		if echo "$coreupdates"; then
+			$runupdates=true
+		fi
+	fi
+
+
+	if $runupdates then
+    echo '=================================='
+    echo 'BACKUP EVERY ENVIRONMENT:'
+    $terminus site backups create --site=$site --env=dev --element=all
+    $terminus site backups create --site=$site --env=test --element=all
+    $terminus site backups create --site=$site --env=live --element=all
+    echo '=================================='
+    echo 'CHANGING MODE IN DEV TO GIT:'
+    $terminus site set-connection-mode --site=$site --env=dev --mode=git
 		echo '=================================='
 		echo 'APPLYING UPSTREAM UPDATES TO DEV:'
 		$terminus site upstream-updates apply --yes --site=$site --env=dev --accept-upstream --updatedb
@@ -62,16 +75,16 @@ if echo "$framework"; then
 		$terminus drush "up --security-only --no-core -y" --site=$site --env=$multidev
 		echo '=================================='
 		echo 'COMMITTING THE CODE CHANGES:'
-		$terminus site code commit --site=$site --env=$multidev --message="Autopilot: Running security updates. $updatestatus" --yes
+		$terminus site code commit --site=$site --env=$multidev --message="Autopilot: Running security updates. $moduleupdates" --yes
 		echo '=================================='
 		echo 'MERGING COMMIT INTO MASTER / DEV:'
 		$terminus site merge-to-dev --site=$site --env=$multidev
 		echo '=================================='
 		echo 'DEPLOYING UPDATES INTO TEST'
-		$terminus site deploy --site=$site --env=test --sync-content --cc --updatedb --note="Autopilot: Running security updates and any other changes staged in Dev. Please double check the code tab to ensure only the updates are in this deployment before pushing to live.  $updatestatus"
+		$terminus site deploy --site=$site --env=test --sync-content --cc --updatedb --note="Autopilot: Running security updates and any other changes staged in Dev. Please double check the code tab to ensure only the updates are in this deployment before pushing to live.  $moduleupdates $coreupdates"
 		echo '=================================='
 		echo 'SENDING EMAIL'
-		echo -e "Updates available in the Test environment of $site. Go check it out! \n $updatestatus" | mail -s "$site security updates" $3
+		echo -e "Updates available in the Test environment of $site. Go check it out! \n $moduleupdates \n $coreupdates" | mail -s "$site security updates" $3
 		echo '=================================='
 		echo 'AUTOPILOT COMPLETE!'
 		echo '=================================='
