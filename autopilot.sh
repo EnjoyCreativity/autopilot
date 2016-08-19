@@ -32,6 +32,9 @@ if echo "$framework" ; then
 	if echo "$moduleupdates" ; then
 		runupdates=true
 	else
+		echo 'NO MODULE UPDATES'
+		echo '=================================='
+		echo 'CHECKING FOR UPSTREAM UPDATES:'
 		coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')"
 
 		if echo "$coreupdates" ; then
