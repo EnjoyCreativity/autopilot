@@ -27,9 +27,9 @@ framework="$($terminus site info --site=$1 | grep -o 'drupal')"
 if echo "$framework" ; then
 	echo '=================================='
 	echo 'CHECKING FOR UPSTREAM UPDATES:'
-	coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')"
+	coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')" | true
 
-	if echo "$coreupdates" ; then
+	if grep -q -E -o 'Update to Drupal' echo $coreupdates ; then
 		runupdates=true
 	else
 		echo 'NO UPSTREAM UPDATES'
