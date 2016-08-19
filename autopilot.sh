@@ -30,12 +30,12 @@ if echo "$framework" ; then
 	moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE')"
 
 	if echo "$moduleupdates" ; then
-		$runupdates=true
+		runupdates=true
 	else
 		coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')"
 
 		if echo "$coreupdates" ; then
-			$runupdates=true
+			runupdates=true
 		fi
 	fi
 
