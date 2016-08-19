@@ -24,27 +24,23 @@ echo '=================================='
 echo 'CHECKING THE FRAMEWORK:'
 framework="$($terminus site info --site=$1 | grep -o 'drupal')"
 
-if [echo "$framework"]
-then
+if echo "$framework" ; then
 	echo '=================================='
 	echo 'CHECKING FOR UPDATES ON LIVE:'
 	moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available')"
 
-	if [echo "$moduleupdates"]
-	then
+	if echo "$moduleupdates" ; then
 		$runupdates=true
 	else
 		coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')"
 
-		if [echo "$coreupdates"]
-		then
+		if echo "$coreupdates" ; then
 			$runupdates=true
 		fi
 	fi
 
 
-	if [$runupdates]
-	then
+	if $runupdates ; then
     echo '=================================='
     echo 'BACKUP EVERY ENVIRONMENT:'
     $terminus site backups create --site=$site --env=dev --element=all
@@ -59,8 +55,7 @@ then
 		echo '=================================='
 		echo 'TESTING FOR AUTOPILOT ENVIRONMENT:'
 
-		if [$terminus site environments --site=$site | grep autopilot]
-		then
+		if $terminus site environments --site=$site | grep autopilot ; then
 			echo 'SYNCING CODE AND CONTENT TO MULTIDEV'
 			$terminus site clone-content --site=$site --from-env=live --to-env=$multidev --yes
 			$terminus site merge-from-dev --site=$site --env=$multidev
@@ -100,8 +95,7 @@ then
 else
 	$framework="$($terminus site info --site=$1 | grep -o 'wordpress')"
 
-	if [echo "$framework"]
-	then
+	if echo "$framework" ; then
 		echo 'WORDPRESS'
 	else
 		echo 'FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS'
