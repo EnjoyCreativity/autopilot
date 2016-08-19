@@ -27,15 +27,15 @@ framework="$($terminus site info --site=$1 | grep -o 'drupal')"
 if echo "$framework" ; then
 	echo '=================================='
 	echo 'CHECKING FOR UPSTREAM UPDATES:'
-	coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')" | true
+	coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')" || true
 
-	if grep -q -E -o 'Update to Drupal' echo $coreupdates ; then
+	if [[ ${coreupdates:0:16} == 'Update to Drupal' ]] ; then
 		runupdates=true
 	else
 		echo 'NO UPSTREAM UPDATES'
 		echo '=================================='
 		echo 'CHECKING FOR MOD UPDATES ON LIVE:'
-		moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE')"
+		moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE')" || true
 
 		if echo "$moduleupdates" ; then
 			runupdates=true
