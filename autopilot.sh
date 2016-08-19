@@ -12,7 +12,7 @@ pemail=$2
 email=$3
 # What should the multidev environment be called?
 multidev="autopilot"
-# Should updates run? We don't know yet.
+# Should updates run? We don't know yet so assume no.
 runupdates=false
 
 echo '=================================='
@@ -102,9 +102,9 @@ else
 
 	if [echo "$framework"]
 	then
-
+		echo 'WORDPRESS'
 	else
-		echo "FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS"
-		echo "THIS FRAMEWORK IS NOT SUPPORTED"
+		echo 'FRAMEWORK IS NEITHER DRUPAL NOR WORDPRESS'
+		echo 'THIS FRAMEWORK IS NOT SUPPORTED'
 	fi
 fi
