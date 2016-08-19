@@ -30,6 +30,7 @@ if echo "$framework" ; then
 	coreupdates="$($terminus site upstream-updates list --site=$site | grep -E -o 'Update to Drupal.{0,5}')" || true
 
 	if [[ ${coreupdates:0:16} == 'Update to Drupal' ]] ; then
+		echo $coreupdates;
 		runupdates=true
 	else
 		echo 'NO UPSTREAM UPDATES'
