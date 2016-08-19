@@ -27,7 +27,7 @@ framework="$($terminus site info --site=$1 | grep -o 'drupal')"
 if echo "$framework" ; then
 	echo '=================================='
 	echo 'CHECKING FOR UPDATES ON LIVE:'
-	moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE available')"
+	moduleupdates="$($terminus drush "upc --security-only --no-core --check-updatedb=0 -n" --site=$site --env=test | grep 'SECURITY UPDATE')"
 
 	if echo "$moduleupdates" ; then
 		$runupdates=true
